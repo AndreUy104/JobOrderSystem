@@ -51,4 +51,4 @@ Route::put('/edit-order/{customer}' , [OrderController::class , 'updateOrder'])-
 Route::delete('/delete-order/{orderId}' , [OrderController::class , 'destroyOrder'])->name('destroy-order')->middleware('admin');
 
 // Admin
-Route::get('/admin' , [AdminController::class , 'show'])->name('admin')->middleware('admin');   
+Route::get('/admin' , [AdminController::class , 'show'])->name('admin')->middleware('admin');

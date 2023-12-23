@@ -20,7 +20,7 @@
                     <br/>
                     <div class="row">
                         <div class="col">
-                            <h6>Billing Statement: {{ $order->created_at->format("YmdHis") }}</h6>
+                            <h6>Billing Statement: {{$year}} - {{ $order->id }}</h6>
                         </div>
                         <div class="col-6">
                             <h6>Customer Copy</h6>
@@ -83,6 +83,7 @@
                                 <p>Full Paid</p>
                             @else
                                 <p>Down Paid: {{ $order->payment }}</p>
+                                <p>Balance: {{$order->total - $order->payment}}</p>
                             @endif
 
                         </div>

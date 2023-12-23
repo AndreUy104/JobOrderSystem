@@ -16,7 +16,7 @@ class OrderController extends Controller
 
         foreach ($orders as $order) {
             $timestamp = strtotime($order->created_at); // Assuming 'created_at' is the timestamp column
-            $formattedTimestamp = date("YmdHis", $timestamp);
+            $formattedTimestamp = date("Ymd", $timestamp);
             $formattedTimestamps[] = $formattedTimestamp;
         }
 

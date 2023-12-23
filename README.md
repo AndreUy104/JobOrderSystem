@@ -2,14 +2,6 @@
 
 The Job Order System Application is a web-based system designed to manage and track job orders within an organization. It provides a platform for creating, updating, and monitoring job orders efficiently.
 
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-
-
 ## Features
 
 - **Job Order Management:** Create, update, and delete job orders.

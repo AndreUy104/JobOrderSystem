@@ -113,14 +113,12 @@ class OrderController extends Controller
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
-
         // Retrieve orders with associated customers where customer_name matches the keyword
         $orders = Order::with('customer')
             ->whereHas('customer', function ($query) use ($keyword) {
                 $query->where('customer_name', 'like', '%' . $keyword . '%');
             })
             ->paginate(10);
-
         return view('viewOrder', compact('orders'));
     }
 }

@@ -24,7 +24,7 @@
                             <label for="endDate" class="form-label">To</label>
                             <input type="date" id="endDate" name="to" value="{{ request('to') }}" style="height: 35px" required>
 
-                            <button class="btn btn-primary" type="submit">Search</button>
+                            <button class="btn btn-primary" type="submit" onclick="return validateDates()">Search</button>
                             <a class="btn btn-secondary" href="{{ @route('view') }}" role="button">Reset</a>
                         </div>
                     </div>
@@ -72,3 +72,19 @@
     {{ $orders->links('pagination::bootstrap-4') }}
 
 @endsection()
+
+
+<script>
+    function validateDates() {
+        var fromDate = new Date(document.getElementById('startDate').value);
+        var toDate = new Date(document.getElementById('endDate').value);
+
+        // Check if To date is less than From date
+        if (toDate < fromDate) {
+            alert('To date must not be less than From date');
+            return false; // Prevent form submission
+        }
+
+        return true; // Allow form submission
+    }
+</script>

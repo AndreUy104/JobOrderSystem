@@ -19,6 +19,7 @@
                         <div class="mb-3">
                             <label for="price">Price</label>
                             <input type="number" step="any" name="price" class="form-control" id="price" placeholder="Price" required>
+                            <br/>
                             <button class="btn btn-success" type="submit">Add Order</button>
                         </div>
                     </form>
@@ -130,33 +131,15 @@
             return;
         }
 
-        // Create a temporary form element
-        var tempForm = document.createElement("form");
-        tempForm.action = route;
-        tempForm.method = "POST";
-
-        // Append CSRF token input
-        var csrfInput = document.createElement("input");
-        csrfInput.type = "hidden";
-        csrfInput.name = "_token";
-        csrfInput.value = "{{ csrf_token() }}";
-        tempForm.appendChild(csrfInput);
-
-        // Append the method input (DELETE)
-        var methodInput = document.createElement("input");
-        methodInput.type = "hidden";
-        methodInput.name = "_method";
-        methodInput.value = "DELETE";
-        tempForm.appendChild(methodInput);
-
-        // Append the temporary form to the document body
-        document.body.appendChild(tempForm);
-
-        // Submit the form
-        tempForm.submit();
-
-        // Remove the temporary form from the document body
-        document.body.removeChild(tempForm);
+        // Send a DELETE request using Fetch API
+        fetch(route, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+        })
+        location.replace(location.href);
     }
 
     function handleChange(value){

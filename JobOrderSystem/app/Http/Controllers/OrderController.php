@@ -6,7 +6,6 @@ use App\Models\Customer;
 use App\Models\Description;
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -109,5 +108,19 @@ class OrderController extends Controller
 
         Order::where('id' , $orderId)->delete();
         return redirect()->route('view')->with('success' , 'Order removed!');
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        // Retrieve orders with associated customers where customer_name matches the keyword
+        $orders = Order::with('customer')
+            ->whereHas('customer', function ($query) use ($keyword) {
+                $query->where('customer_name', 'like', '%' . $keyword . '%');
+            })
+            ->paginate(10);
+
+        return view('viewOrder', compact('orders'));
     }
 }

@@ -1,25 +1,30 @@
 @extends('mainView.layout')
 @section('content')
-
 <div class="card text-bg-light mb-3" id="descView">
     <h5 class="card-header">Order List</h5>
     <div class="card-body">
-        <form method="POST" action="{{ @route('save-description' , ['customer' => $customers] ) }}">
-            @csrf
             <div class="row">
-                <div class="col-sm">
-                    <input type="number" name="qty" class="form-control" placeholder="Qty" aria-label="Qty" required>
-                    <br/>
-                    <button class="btn btn-success" type="submit">Add Order</button>
+                <!-- Add Order Form -->
+                <div class="col-md-6">
+                    <form method="POST" action="{{ route('save-description', ['customer' => $customers]) }}">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="qty">Quantity</label>
+                            <input type="number" name="qty" class="form-control" id="qty" placeholder="Qty" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description">Description</label>
+                            <input type="text" name="description" class="form-control" id="description" placeholder="Description" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price">Price</label>
+                            <input type="number" step="any" name="price" class="form-control" id="price" placeholder="Price" required>
+                            <button class="btn btn-success" type="submit">Add Order</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-sm-5">
-                    <input type="text" name="description" class="form-control" placeholder="Description" aria-label="Description" required>
-                </div>
-                <div class="col-sm">
-                    <input type="number" step="any" name="price" class="form-control" placeholder="Price" aria-label="Price" required>
-                </div>
-        </form>
-                <div class="col">
+                <!-- Order List -->
+                <div class="col-md-6">
                     <div class="scroll-div">
                         <table class="table table-striped">
                             <thead>
@@ -31,24 +36,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @empty($descs)
-                                <p>No Order Added.</p>
-                            @else
-                                @foreach($descs as $desc)
-                                    <tr>
-                                        <td>{{ $desc->qty }}</td>
-                                        <td>{{ $desc->description }}</td>
-                                        <td>{{ $desc->price }}</td>
-                                        <td>
-                                            <form method="POST" action="{{@route('delete-description' , ['description' => $desc->id])}}" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger">Remove</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endempty
+                            @forelse($descs ?? [] as $desc)
+                                <tr>
+                                    <td>{{ $desc->qty }}</td>
+                                    <td>{{ $desc->description }}</td>
+                                    <td>{{ $desc->price }}</td>
+                                    <td>
+                                        <form id="removeForm" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" onclick="deleteDescription('{{ route('delete-description', ['description' => $desc->id, 'customer' => $customers]) }}')" class="btn btn-outline-danger">Remove</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4">No Order Added.</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -57,9 +62,11 @@
         <form method="POST" action="{{ @route('save-order' , ['customer' => $customers] ) }}">
         @csrf
             <div class="row">
-                <div class="input-group" style="margin-left: 1000px">
-                    <div class="input-group-text">₱</div>
-                    <input type="text" class="form-control disable" name="total" id="specificSizeInputGroupUsername" value="{{$total}}" readonly >
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₱</span>
+                        <input type="text" class="form-control disable" name="total" id="specificSizeInputGroupUsername" value="{{$total}}" readonly >
+                    </div>
                 </div>
             </div>
             <br/>
@@ -116,6 +123,41 @@
         }
 
     })
+
+    function deleteDescription(route) {
+        // Confirm deletion with the user if needed
+        if (!confirm("Are you sure you want to delete this item?")) {
+            return;
+        }
+
+        // Create a temporary form element
+        var tempForm = document.createElement("form");
+        tempForm.action = route;
+        tempForm.method = "POST";
+
+        // Append CSRF token input
+        var csrfInput = document.createElement("input");
+        csrfInput.type = "hidden";
+        csrfInput.name = "_token";
+        csrfInput.value = "{{ csrf_token() }}";
+        tempForm.appendChild(csrfInput);
+
+        // Append the method input (DELETE)
+        var methodInput = document.createElement("input");
+        methodInput.type = "hidden";
+        methodInput.name = "_method";
+        methodInput.value = "DELETE";
+        tempForm.appendChild(methodInput);
+
+        // Append the temporary form to the document body
+        document.body.appendChild(tempForm);
+
+        // Submit the form
+        tempForm.submit();
+
+        // Remove the temporary form from the document body
+        document.body.removeChild(tempForm);
+    }
 
     function handleChange(value){
         // console.log('show amour is now:' , showAmount);

@@ -49,6 +49,8 @@ Route::get('/edit-order/{customer}' , [OrderController::class , 'edit'])->name('
 Route::delete('/create-order/{description}/{customer}' , [DescriptionController::class , 'destoryEditDescription'])->name('delete-description')->middleware('auth');
 Route::put('/edit-order/{customer}' , [OrderController::class , 'updateOrder'])->name('edit-order')->middleware('auth');
 Route::delete('/delete-order/{orderId}' , [OrderController::class , 'destroyOrder'])->name('destroy-order')->middleware('admin');
+Route::get('/orders/search', [OrderController::class, 'search'])->name('order.search');
+
 
 // Admin
 Route::get('/admin' , [AdminController::class , 'show'])->name('admin')->middleware('admin');

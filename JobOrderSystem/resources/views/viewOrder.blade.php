@@ -6,10 +6,12 @@
         <div class="row">
             <div class="col">
                 {{--Search By Customer name or order number--}}
-                <div class="form-floating mb-2">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="Customer Name Or Order Number">
-                    <label for="floatingInput">Search Customer Name or Order Number</label>
-                </div>
+                <form action="{{ route('order.search') }}" method="GET">
+                    <div class="form-floating mb-2">
+                        <input onchange="this.form.submit()" name="keyword"  type="text" class="form-control" id="floatingInput" placeholder="Customer Name Or Order Number">
+                        <label for="floatingInput">Search Customer Name or Order Number</label>
+                    </div>
+                </form>
             </div>
             <div class="col-6">
                 {{--Search by Date--}}
@@ -54,16 +56,16 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($orders as $order)
-                <tr>
-                    <th>{{ $order->created_at->format("Y") }} - {{$order->id}}</th>
-                    <td>{{ $order->customer->customer_name }}</td>
-                    <td>{{ $order->created_at->toDateString() }}</td>
-                    <td>{{ $order->user->name }}</td>
-                    <td>
-                        <a href="{{ @route('print' , ['orderNum' => $order->id]) }}">View</a>
-                    </td>
-                </tr>
+        @foreach ($orders as $order)
+            <tr>
+                <th>{{ $order->created_at->format("Y") }} - {{ $order->id }}</th>
+                <td>{{ $order->customer->customer_name }}</td>
+                <td>{{ $order->created_at->toDateString() }}</td>
+                <td>{{ $order->user->name }}</td>
+                <td>
+                    <a href="{{ route('print', ['orderNum' => $order->id]) }}">View</a>
+                </td>
+            </tr>
         @endforeach
         </tbody>
     </table>

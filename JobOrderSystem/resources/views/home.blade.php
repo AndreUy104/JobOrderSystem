@@ -2,7 +2,7 @@
 
 @section('content')
     @guest
-        <x-landing title="Welcome to My App" description="Discover amazing features and benefits of our app." />
+        <x-landing/>
     @endguest
 @auth
 <div class="container text-center">
@@ -46,46 +46,14 @@
         </div>
     </div>
     <br/>
-    @if(auth()->user()->is_admin == true)
-      <div class="row">
-          <div class="col">
-              <canvas id="myChart" style="width:100%;max-width:800px;margin: auto"></canvas>
-          </div>
-          <script>
-              const xValues = ["Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec" ];
-              const yValues = [7,8,8,9,9,9,10,11,14,14,15];
-
-              new Chart("myChart", {
-                  type: "line",
-                  data: {
-                      labels: xValues,
-                      datasets: [{
-                          fill: false,
-                          lineTension: 0,
-                          backgroundColor: "rgba(0,0,255,1.0)",
-                          borderColor: "rgba(0,0,255,0.1)",
-                          data: yValues
-                      }]
-                  },
-                  options: {
-                      legend: {display: false},
-                      scales: {
-                          yAxes: [{ticks: {min: 6, max:16}}],
-                      }
-                  }
-              });
-          </script>
-      </div>
-    @endif
-    <br/>
-  <div class="row">
-    <div class="col"/>
-    <div class="col">
-      <h4>Simple, Reliable and Fast</h4>
-      <img src="{{ asset('img/ALUlogo.png') }}" alt="ALULogo" style="border-radius: 50%; height: 200px;">
-    </div>
-    <div class="col"/>
-  </div>
+    <div class="row">
+        <div class="col"/>
+        <div class="col">
+          <h4>Simple, Reliable and Fast</h4>
+          <img src="{{ asset('img/ALUlogo.png') }}" alt="ALULogo" style="border-radius: 50%; height: 200px;">
+        </div>
+        <div class="col"/>
+     </div>
 </div>
 @endauth
 @endsection

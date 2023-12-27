@@ -39,5 +39,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'password' => 'hashed',
+        'is_admin' => 'boolean'
     ];
 }

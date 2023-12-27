@@ -54,3 +54,4 @@ Route::get('/orders/search', [OrderController::class, 'search'])->name('order.se
 
 // Admin
 Route::get('/admin' , [AdminController::class , 'show'])->name('admin')->middleware('admin');
+Route::put('/toggle-admin-access/{userId}', [AdminController::class, 'toggleAdminAccess'])->middleware('admin')->name('update-admin');

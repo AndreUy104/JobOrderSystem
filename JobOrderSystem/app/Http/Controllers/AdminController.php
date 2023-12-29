@@ -2,15 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     public function show(){
 
+        $monthlySales = Order::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(total) as total')
+            ->groupBy('month')
+            ->get();
+
+        $monthlyOrderCounts = Order::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->get();
+
         return view('admin',[
             'users' => User::paginate(10),
+            'monthSales' => $monthlySales,
+            'monthTotalSales' => $monthlyOrderCounts,
         ]);
     }
 
@@ -19,7 +31,6 @@ class AdminController extends Controller
         $user = User::find($userId);
 
         if ($user) {
-            // Toggle the 'is_admin' field
             $user->is_admin = !$user->is_admin;
             $user->save();
 

@@ -13,7 +13,7 @@
     </div>
     <div class="card-body">
         <div id="report" style="display: none">
-            <x-charts></x-charts>
+            <x-charts :monthlySales="$monthSales" :monthTotalSales="$monthTotalSales"></x-charts>
         </div>
         <div id="list" style="display: block">
             <x-userList :users="$users"></x-userList>

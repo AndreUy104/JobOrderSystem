@@ -9,7 +9,7 @@
                 <form action="{{ route('order.search') }}" method="GET">
                     <div class="form-floating mb-2">
                         <input onchange="this.form.submit()" name="keyword"  type="text" class="form-control" id="floatingInput" placeholder="Customer Name Or Order Number">
-                        <label for="floatingInput">Search Customer Name or Order Number</label>
+                        <label for="floatingInput">Search Customer Name</label>
                     </div>
                 </form>
             </div>

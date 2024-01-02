@@ -12,18 +12,27 @@ class OrderController extends Controller
 {
     public function showAll(){
         $orders = Order::get();
+        $formattedTimestamps = [];
+
+        if ($orders->isEmpty()) {
+            return view('viewOrder', [
+                'orders' => Order::filter(request(['from', 'to']))->with(['customer', 'user'])->paginate(10),
+                'order_id' => $formattedTimestamps,
+            ]);
+        }
 
         foreach ($orders as $order) {
-            $timestamp = strtotime($order->created_at); // Assuming 'created_at' is the timestamp column
+            $timestamp = strtotime($order->created_at);
             $formattedTimestamp = date("Ymd", $timestamp);
             $formattedTimestamps[] = $formattedTimestamp;
         }
 
-        return view('viewOrder' , [
-            'orders' => Order::filter(request(['from' , 'to']))->with(['customer' , 'user'])->paginate(10),
+        return view('viewOrder', [
+            'orders' => Order::filter(request(['from', 'to']))->with(['customer', 'user'])->paginate(10),
             'order_id' => $formattedTimestamps,
         ]);
     }
+
 
     public function printPreview(Order $orderNum){
         $years = Order::selectRaw('YEAR(created_at) as year')

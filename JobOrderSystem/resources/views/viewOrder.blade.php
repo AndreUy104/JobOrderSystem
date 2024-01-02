@@ -44,33 +44,36 @@
             </div>
         </div>
     </div>
-    {{ $orders->links('pagination::bootstrap-5') }}
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Order Number</th>
-            <th scope="col">Customer Name</th>
-            <th scope="col">Created On</th>
-            <th scope="col">Created By</th>
-            <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach ($orders as $order)
+    @if ($orders->isEmpty())
+        <p>No orders found</p>
+    @else
+        {{ $orders->links('pagination::bootstrap-5') }}
+        <table class="table">
+            <thead>
             <tr>
-                <th>{{ $order->created_at->format("Y") }} - {{ $order->id }}</th>
-                <td>{{ $order->customer->customer_name }}</td>
-                <td>{{ $order->created_at->toDateString() }}</td>
-                <td>{{ $order->user->name }}</td>
-                <td>
-                    <a href="{{ route('print', ['orderNum' => $order->id]) }}">View</a>
-                </td>
+                <th scope="col">Order Number</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Created On</th>
+                <th scope="col">Created By</th>
+                <th scope="col">Actions</th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
-    {{ $orders->links('pagination::bootstrap-4') }}
-
+            </thead>
+            <tbody>
+            @foreach ($orders as $order)
+                <tr>
+                    <th>{{ $order->created_at->format("Y") }} - {{ $order->id }}</th>
+                    <td>{{ $order->customer->customer_name }}</td>
+                    <td>{{ $order->created_at->toDateString() }}</td>
+                    <td>{{ $order->user->name }}</td>
+                    <td>
+                        <a href="{{ route('print', ['orderNum' => $order->id]) }}">View</a>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+        {{ $orders->links('pagination::bootstrap-4') }}
+    @endif
 @endsection()
 
 

@@ -4,62 +4,69 @@
     <div class="card text-bg-light mb-3" id="descView">
         <h5 class="card-header">Edit Order List</h5>
         <div class="card-body">
-            <form method="POST" action="{{ @route('edit-description' , ['customer' => $customer_id] ) }}">
-                @csrf
-                <div class="row">
-                    <div class="col-sm">
-                        <input type="number" name="qty" class="form-control" placeholder="Qty" aria-label="Qty" required>
-                        <br/>
-                        <button class="btn btn-success" type="submit">Add Order</button>
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="POST" action="{{ @route('edit-description' , ['customer' => $customer_id] ) }}">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="qty">Quantity</label>
+                            <input type="number" name="qty" class="form-control" id="qty" placeholder="Qty" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description">Description</label>
+                            <input type="text" name="description" class="form-control" id="description" placeholder="Description" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price">Price</label>
+                            <input type="number" step="any" name="price" class="form-control" id="price" placeholder="Price" required>
+                            <br/>
+                            <button class="btn btn-success" type="submit">Add Order</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <div class="scroll-div">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Qty</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Unit Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @empty($descs)
+                                <p>No Order Added.</p>
+                            @else
+                                @foreach($descs as $desc)
+                                    <tr>
+                                        <td>{{ $desc->qty }}</td>
+                                        <td>{{ $desc->description }}</td>
+                                        <td>{{ $desc->price }}</td>
+                                        <td>
+                                            <form method="POST" class="d-inline" action="{{@route('delete-description' , ['description' => $desc->id , 'customer' => $customer_id])}}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endempty
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-sm-5">
-                        <input type="text" name="description" class="form-control" placeholder="Description" aria-label="Description" required>
-                    </div>
-                    <div class="col-sm">
-                        <input type="number" step="any" name="price" class="form-control" placeholder="Price" aria-label="Price" required>
-                    </div>
-            </form>
-            <div class="col">
-                <div class="scroll-div">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">Qty</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Unit Price</th>
-                            <th scope="col"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @empty($descs)
-                            <p>No Order Added.</p>
-                        @else
-                            @foreach($descs as $desc)
-                                <tr>
-                                    <td>{{ $desc->qty }}</td>
-                                    <td>{{ $desc->description }}</td>
-                                    <td>{{ $desc->price }}</td>
-                                    <td>
-                                        <form method="POST" class="d-inline" action="{{@route('delete-description' , ['description' => $desc->id , 'customer' => $customer_id])}}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger">Remove</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endempty
-                        </tbody>
-                    </table>
                 </div>
             </div>
             <form method="POST" action="{{ @route('edit-order' , ['customer' => $customer_id] ) }}">
                 @csrf
                 @method('PUT')
                 <div class="row">
-                    <div class="input-group" style="margin-left: 1000px">
-                        <div class="input-group-text">₱</div>
-                        <input type="text" class="form-control disable" name="total" id="specificSizeInputGroupUsername" value="{{$total}}" readonly >
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">₱</span>
+                            <input type="text" class="form-control disable" name="total" id="specificSizeInputGroupUsername" value="{{$total}}" readonly >
+                        </div>
                     </div>
                 </div>
                 <br/>
@@ -84,7 +91,7 @@
                         <br/>
                         <br/>
                     </div>
-                    <button type="submit" class="btn btn-success" style="width: 400px">Create Order</button>
+                    <button type="submit" class="btn btn-success" style="width: 400px">Save Order</button>
                 </div>
             </form>
         </div>
@@ -97,7 +104,7 @@
         padding:5px;
         margin:5px;
         width: 400px;
-        height: 150px;
+        height: 300px;
         overflow-y: auto;
         overflow-x: hidden;
         text-align:justify;

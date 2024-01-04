@@ -31,9 +31,11 @@
 
 <script>
     // Assuming you have passed $monthlySales and $monthTotalSales from your controller
-    const months = @json($monthlySales->pluck('month'));
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const salesData = @json($monthlySales->pluck('total'));
-    const orderCounts = @json($monthTotalSales->pluck('count'));
+    const orderCounts = @json($monthTotalSales->pluck('count')->filter(function ($value) {
+        return $value !== null;
+    }));
 
     // Line chart for Total Sales
     const LineChart = new Chart("LineChart", {
@@ -96,6 +98,7 @@
         data: {
             labels: months,
             datasets: [{
+                label: "Total Sale",
                 backgroundColor: "rgba(0,0,255,0.7)",
                 borderColor: "rgba(0,0,255,1.0)",
                 borderWidth: 1,
@@ -110,7 +113,8 @@
                 y: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 1
+                        stepSize: 1,
+                        precision: 0
                     },
                     grid: { color: "rgba(0, 0, 0, 0.1)" }
                 }]
@@ -126,7 +130,7 @@
                     top: 10,
                     bottom: 10
                 }
-            }
+            },
         }
     });
 

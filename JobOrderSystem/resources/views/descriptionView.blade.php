@@ -33,7 +33,6 @@
                                 <th scope="col">Qty</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Unit Price</th>
-                                <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -80,7 +79,7 @@
                     <br/>
                     <br/>
                     <div class="form-floating mb-3"  id="amountContainer">
-                        <input type="number" step="any" class="form-control" name="payment" id="payment" value="{{$total}}">
+                        <input type="number" step="any" class="form-control" name="payment" id="payment" onchange="validateDp()" value="{{$total}}">
                         <label for="floatingInput">Amount</label>
                     </div>
                 </div>
@@ -101,7 +100,7 @@
         padding:5px;
         margin:5px;
         width: 400px;
-        height: 150px;
+        height: 300px;
         overflow-y: auto;
         overflow-x: hidden;
         text-align:justify;
@@ -109,21 +108,18 @@
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let showAmount = false;
-        const amountContainer = document.getElementById("amountContainer");
 
-        if (amountContainer) {
-            if (showAmount) {
-                amountContainer.style.display = "block";
-            } else {
-                amountContainer.style.display = "none";
-            }
-        } else {
-            console.error("amountContainer is null or undefined");
+    function validateDp() {
+        var amountInput = document.getElementById("payment");
+        var amount = parseFloat(amountInput.value);
+        var total = parseFloat("{{$total}}");
+
+        if (amount > total) {
+            alert("Payment amount cannot be greater than total.");
+            // You might want to reset the input value or take some other action
+            amountInput.value = total;
         }
-
-    })
+    }
 
     function deleteDescription(route) {
         // Confirm deletion with the user if needed
@@ -143,7 +139,6 @@
     }
 
     function handleChange(value){
-        // console.log('show amour is now:' , showAmount);
         switch (value) {
             case 'full':
                 showAmount = false;

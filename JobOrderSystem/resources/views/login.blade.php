@@ -43,6 +43,7 @@
                 @enderror
             </div>
             <div class="">
+                <label for="validationDefaultUsername" class="form-label">Password</label>
                 <div class="input-group">
                     <input type="password" class="form-control" id="validationDefaultUsername" name="password" aria-describedby="inputGroupPrepend2" required>
                     <div class="input-group-append">
